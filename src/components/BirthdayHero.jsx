@@ -1,6 +1,6 @@
 import { Gift, Heart, Sparkles } from 'lucide-react';
-
-function BirthdayHero({ friendName, onOpenLetter, isPlaying, onToggleMusic }) {
+import yusuf from '../assets/Yusuf.jpeg';
+function BirthdayHero({ friendName, onOpenLetter }) {
   return (
     <section className="birthday-hero">
       <div className="hero-decoration decoration-one">✦</div>
@@ -14,7 +14,7 @@ function BirthdayHero({ friendName, onOpenLetter, isPlaying, onToggleMusic }) {
           <Sparkles size={15} />
         </div>
 
-        <p className="hero-intro">To my amazing best friend,</p>
+        <p className="hero-intro">To our amazing best friend,</p>
 
         <h1>
           Happy Birthday,
@@ -30,16 +30,7 @@ function BirthdayHero({ friendName, onOpenLetter, isPlaying, onToggleMusic }) {
         <div className="hero-buttons">
           <button className="surprise-button" onClick={onOpenLetter}>
             <Gift size={19} />
-            Open Your Surprise
-          </button>
-
-          <button
-            className={`music-button ${isPlaying ? 'playing' : ''}`}
-            onClick={onToggleMusic}
-            aria-label={isPlaying ? 'Pause music' : 'Play music'}
-          >
-            <span className="music-icon">♫</span>
-            {isPlaying ? 'Pause Music' : 'Play Music'}
+            Open Your gift
           </button>
         </div>
 
@@ -54,17 +45,8 @@ function BirthdayHero({ friendName, onOpenLetter, isPlaying, onToggleMusic }) {
         <div className="photo-glow"></div>
 
         <div className="photo-frame">
-          <img
-            src={`${import.meta.env.BASE_URL}images/friend.jpg`}
-            alt={`A special photo of ${friendName}`}
-            onError={(event) => {
-              event.currentTarget.style.display = 'none';
-            }}
-          />
-
           <div className="photo-placeholder">
-            <span>🎂</span>
-            <p>Your favourite photo goes here</p>
+           <img src={yusuf} alt={`A special photo of ${friendName}`} />
           </div>
         </div>
 

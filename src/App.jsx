@@ -1,5 +1,11 @@
-import { useRef, useState } from 'react';
-import { Heart, Music2, Sparkles } from 'lucide-react';
+
+import { useState } from 'react';
+import {
+  Heart,
+  Sparkles,
+  ArrowRight,
+  Gift,
+} from 'lucide-react';
 
 import BirthdayHero from './components/BirthdayHero';
 import BirthdayLetter from './components/BirthdayLetter';
@@ -8,14 +14,23 @@ import Confetti from './components/Confetti';
 import './App.css';
 
 function App() {
-  // CUSTOMIZE YOUR FRIEND'S NAME HERE
-  const friendName = 'Your Bestie';
+  const [nameInput, setNameInput] = useState('');
+  const [friendName, setFriendName] = useState('');
+  const [showBirthday, setShowBirthday] = useState(false);
 
   const [showLetter, setShowLetter] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  const audioRef = useRef(null);
+  const handleNameSubmit = (event) => {
+    event.preventDefault();
+
+    const enteredName = nameInput.trim();
+
+    if (!enteredName) return;
+
+    setFriendName(enteredName);
+    setShowBirthday(true);
+  };
 
   const openBirthdaySurprise = () => {
     setShowLetter(true);
@@ -26,101 +41,138 @@ function App() {
     }, 7000);
   };
 
-  const toggleMusic = async () => {
-    const audio = audioRef.current;
-
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-      return;
-    }
-
-    try {
-      await audio.play();
-      setIsPlaying(true);
-    } catch (error) {
-      console.error('Unable to play birthday music:', error);
-      setIsPlaying(false);
-    }
-  };
-
   return (
     <main className="app">
-      <audio
-        ref={audioRef}
-        src={`${import.meta.env.BASE_URL}music/birthday-song.mp3`}
-        loop
-        onEnded={() => setIsPlaying(false)}
-        onPause={() => setIsPlaying(false)}
-        onPlay={() => setIsPlaying(true)}
-      />
+      <div className="background-decoration background-circle-one" />
+      <div className="background-decoration background-circle-two" />
 
-      <div className="background-decoration background-circle-one"></div>
-      <div className="background-decoration background-circle-two"></div>
+      {!showBirthday ? (
+        <section className="welcome-screen">
+          <div className="welcome-card">
+            <div className="welcome-decoration welcome-decoration-one">
+              ✦
+            </div>
 
-      <header className="site-header">
-        <a href="#" className="brand">
-          <Heart size={19} fill="currentColor" />
-          <span>Birthday Wishes</span>
-        </a>
+            <div className="welcome-decoration welcome-decoration-two">
+              ♡
+            </div>
 
-        <span className="header-date">
-          A day made extra special ✨
-        </span>
-      </header>
+            <div className="welcome-icon">
+              <Gift size={35} />
+            </div>
 
-      <BirthdayHero
-        friendName={friendName}
-        onOpenLetter={openBirthdaySurprise}
-        isPlaying={isPlaying}
-        onToggleMusic={toggleMusic}
-      />
+            <div className="welcome-label">
+              <Sparkles size={14} />
+              A LITTLE BIRTHDAY SURPRISE
+              <Sparkles size={14} />
+            </div>
 
-      <section className="birthday-message-section">
-        <div className="section-icon">
-          <Sparkles size={22} />
-        </div>
+            <h1>
+              Before we begin...
+              <span>Who are we celebrating?</span>
+            </h1>
 
-        <p className="section-label">A CELEBRATION OF YOU</p>
+            <p className="welcome-description">
+              Someone special has a birthday surprise waiting.
+            </p>
 
-        <h2>Another year, another reason to smile.</h2>
+            <form onSubmit={handleNameSubmit} className="name-form">
+              <label htmlFor="friend-name">
+                Enter your name
+              </label>
 
-        <p className="section-description">
-          May this new chapter be filled with beautiful moments,
-          unforgettable adventures, great achievements, and
-          everything your heart wishes for.
-        </p>
+              <input
+                id="friend-name"
+                type="text"
+                placeholder="What's your name?"
+                value={nameInput}
+                onChange={(event) => setNameInput(event.target.value)}
+                maxLength={40}
+                autoComplete="given-name"
+                autoFocus
+                required
+              />
 
-        <div className="birthday-wishes">
-          <div className="wish-item">
-            <span>🎁</span>
-            <strong>Endless Blessings</strong>
-            <p>May good things find their way to you.</p>
+              <button type="submit" className="continue-button">
+                Continue
+                <ArrowRight size={18} />
+              </button>
+            </form>
+
+            <div className="welcome-footer">
+              <Heart size={14} fill="currentColor" />
+              Made with love, just for you
+              <Heart size={14} fill="currentColor" />
+            </div>
           </div>
+        </section>
+      ) : (
+        <>
+          <header className="site-header">
+            <a href="#" className="brand">
+              <Heart size={19} fill="currentColor" />
+              <span>Birthday Wishes</span>
+            </a>
 
-          <div className="wish-item">
-            <span>🌟</span>
-            <strong>Big Dreams</strong>
-            <p>May you achieve everything you work for.</p>
-          </div>
+            <span className="header-date">
+              A day made extra special ✨
+            </span>
+          </header>
 
-          <div className="wish-item">
-            <span>❤️</span>
-            <strong>True Happiness</strong>
-            <p>May your days always be full of joy.</p>
-          </div>
-        </div>
-      </section>
+          <BirthdayHero
+            friendName={friendName}
+            onOpenLetter={openBirthdaySurprise}
+          />
 
-      <footer className="site-footer">
-        <p>
-          Made with <Heart size={13} fill="currentColor" /> for
-          {' '}{friendName}
-        </p>
-        <span>Happy Birthday! 🎂</span>
-      </footer>
+          <section className="birthday-message-section">
+            <div className="section-icon">
+              <Sparkles size={22} />
+            </div>
+
+            <p className="section-label">
+              A CELEBRATION OF YOU
+            </p>
+
+            <h2>
+              Another year, another reason to smile, {friendName}.
+            </h2>
+
+            <p className="section-description">
+              May this new chapter be filled with beautiful moments,
+              unforgettable adventures, great achievements, and
+              everything your heart wishes for.
+            </p>
+
+            <div className="birthday-wishes">
+              <div className="wish-item">
+                <span>🎁</span>
+                <strong>Endless Blessings</strong>
+                <p>May good things find their way to you.</p>
+              </div>
+
+              <div className="wish-item">
+                <span>🌟</span>
+                <strong>Big Dreams</strong>
+                <p>May you achieve everything you work for.</p>
+              </div>
+
+              <div className="wish-item">
+                <span>❤️</span>
+                <strong>True Happiness</strong>
+                <p>May your days always be full of joy.</p>
+              </div>
+            </div>
+          </section>
+
+          <footer className="site-footer">
+            <p>
+              Made with <Heart size={13} fill="currentColor" /> for{' '}
+              {friendName}
+            </p>
+            <span>Happy Birthday! 🎂</span>
+          </footer>
+        </>
+      )}
 
       {showConfetti && <Confetti />}
 
@@ -130,11 +182,6 @@ function App() {
           onClose={() => setShowLetter(false)}
         />
       )}
-
-      <div className="music-status" aria-live="polite">
-        <Music2 size={14} />
-        <span>{isPlaying ? 'Music is playing' : 'Your special day'}</span>
-      </div>
     </main>
   );
 }

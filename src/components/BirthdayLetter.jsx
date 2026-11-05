@@ -48,7 +48,7 @@ function BirthdayLetter({ friendName, onClose }) {
             As you celebrate another year, I pray that life
             brings you endless happiness, good health, success,
             peace, and opportunities to achieve everything
-            you dream of.
+            you dream of InshaaLlah. Aamiin.
           </p>
 
           <p>
@@ -65,7 +65,7 @@ function BirthdayLetter({ friendName, onClose }) {
 
         <div className="letter-signature">
           <span>With lots of love,</span>
-          <strong>Your Best Friend ❤️</strong>
+          <strong>Courtesy: Elder, and Moh ❤️</strong>
         </div>
 
         <div className="letter-bottom">
